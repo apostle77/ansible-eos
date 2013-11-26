@@ -269,8 +269,12 @@ class AristaSwitchport(object):
         updates = list()
         for attrib in self.attributes:
             value = getattr(self, attrib)
-            if update(obj[attrib], value) and value is not None:
-                updates.append(attrib)
+            if value is not None:
+                if attrib == 'tagged_vlans':
+                    if sorted(value.split(',')) != sorted(obj['tagged_vlans']):
+                        updates.append(attrib)
+                elif update(obj[attrib], value) and value is not None:
+                    updates.append(attrib)
         self.log("Updates: %s" % updates)
         return updates
 
