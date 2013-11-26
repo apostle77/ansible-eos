@@ -158,7 +158,8 @@ class AristaVlan(object):
         attribs = []
         for attrib in self.attributes:
             if getattr(self, attrib):
-                attribs.append("--%s" % attrib)
+                option = str('--%s' % attrib).replace('_', '-')
+                attribs.append(option)
                 attribs.append(getattr(self, attrib))
 
         cmd = "devops vlan create %s " % self.vlan_id
@@ -187,7 +188,8 @@ class AristaVlan(object):
         """
         attribs = list()
         for attrib in self.updates():
-            attribs.append("--%s" % attrib)
+            option = str('--%s' % attrib).replace('_', '-')
+            attribs.append(option)
             attribs.append(getattr(self, attrib))
 
         if attribs:

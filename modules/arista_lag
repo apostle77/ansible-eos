@@ -177,7 +177,8 @@ class AristaLag(object):
         attribs = []
         for attrib in self.attributes:
             if getattr(self, attrib):
-                attribs.append("--%s" % attrib)
+                option = str('--%s' % attrib).replace('_', '-')
+                attribs.append(option)
                 attribs.append(getattr(self, attrib))
 
             cmd = "devops lag create %s " % self.interface_id
@@ -206,7 +207,8 @@ class AristaLag(object):
         """
         attribs = list()
         for attrib in self.updates():
-            attribs.append("--%s" % attrib)
+            option = str('--%s' % attrib).replace('_', '-')
+            attribs.append(option)
             attribs.append(getattr(self, attrib))
 
             cmd = "devops lag edit %s " % self.interface_id

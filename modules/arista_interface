@@ -41,7 +41,7 @@ options:
         description:
             - controls the operational state of the interface
         required: false
-        choices: [ 'up', 'down' ]
+        choices: [ 'enable', 'disable' ]
     description:
         description:
             - a single line text string describing the interface
@@ -59,7 +59,7 @@ names (ie Ethernet, not Et1)
 
     tasks:
     - name: enable interface Ethernet 1
-      action: arista_interface interface_id=Ethernet1 admin=up logging=true
+      action: arista_interface interface_id=Ethernet1 admin=enable logging=true
 
     - name: set description on Ethernet 1
       action: arista_interface interface_id=Ethernet1 description='test interface' logging=true
@@ -127,7 +127,7 @@ class AristaInterface(object):
               {
                 "interface_id": <interface_id>,
                 "description": <description>,
-                "admin": [up | down],
+                "admin": [enable | disable],
               }
 
             If the physical ethernet interface specified by interface_id does
@@ -153,7 +153,8 @@ class AristaInterface(object):
         """
         attribs = list()
         for attrib in self.updates():
-            attribs.append("--%s" % attrib)
+            option = str('--%s' % attrib).replace('_', '-')
+            attribs.append(option)
             if attrib == 'description':
                 value = "'%s'" % str(getattr(self, attrib))
             else:
@@ -199,7 +200,7 @@ def main():
     module = AnsibleModule(
         argument_spec = dict(
             interface_id=dict(default=None, type='str'),
-            admin=dict(default=None, choices=['up', 'down'], type='str'),
+            admin=dict(default=None, choices=['enable', 'disable'], type='str'),
             description=dict(default=None, type='str'),
             logging=dict(default=False, type='bool')
         ),

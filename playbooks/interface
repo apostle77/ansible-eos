@@ -2,7 +2,10 @@
 - hosts: veos
   tasks:
   - name: enable interface Ethernet 1
-    action: arista_interface interface_id=Ethernet1 admin=up logging=true
+    action: arista_interface interface_id=Ethernet1 admin=enable logging=true
+
+  - name: disable interface Ethernet 1
+    action: arista_interface interface_id=Ethernet1 admin=disable logging=true
 
   - name: set description on Ethernet 1
     action: arista_interface interface_id=Ethernet1 description='test interface' logging=true
